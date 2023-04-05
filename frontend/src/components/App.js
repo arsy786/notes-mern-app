@@ -1,9 +1,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	addNote,
+	amendNote,
+	removeNote,
+	setNotes,
+} from "../stores/noteReducer";
 
 function App() {
-	// State
-	const [notes, setNotes] = useState(null);
+	// Selector
+	const notes = useSelector((state) => state.notes);
+	// Dispatch
+	const dispatch = useDispatch();
+
+	// // State
+	// const [notes, setNotes] = useState(null);
 	const [createForm, setCreateForm] = useState({
 		title: "",
 		description: "",
@@ -16,25 +28,23 @@ function App() {
 
 	// Use Effect
 	useEffect(() => {
+		const fetchNotes = async () => {
+			// Fetch the notes
+			const res = await axios.get("http://localhost:3000/api/notes");
+
+			// Set to state
+			dispatch(setNotes(res.data.notes));
+		};
+
 		fetchNotes();
-	}, []);
+	}, [dispatch]);
 
 	// Functions
-	const fetchNotes = async () => {
-		// Fetch the notes
-		const res = await axios.get("http://localhost:3000/api/notes");
-
-		// Set to state
-		setNotes(res.data.notes);
-	};
 
 	const updateCreateFormField = (e) => {
 		const { name, value } = e.target;
 
-		setCreateForm({
-			...createForm,
-			[name]: value,
-		});
+		dispatch(updateNote({ ...createForm, [name]: value }));
 	};
 
 	const createNote = async (e) => {
@@ -44,7 +54,7 @@ function App() {
 		const res = await axios.post("http://localhost:3000/api/notes", createForm);
 
 		// Update the state
-		setNotes([...notes, res.data.note]);
+		dispatch(addNote(res.data.note));
 
 		// Clear the form
 		setCreateForm({
@@ -58,7 +68,7 @@ function App() {
 		await axios.delete(`http://localhost:3000/api/notes/${id}`);
 
 		// Update the state
-		setNotes(notes.filter((note) => note._id !== id));
+		dispatch(removeNote(id));
 	};
 
 	const toggleUpdate = (note) => {
@@ -85,9 +95,7 @@ function App() {
 		});
 
 		// Update the state
-		setNotes(
-			notes.map((note) => (note._id === updateForm._id ? updateForm : note))
-		);
+		dispatch(amendNote(updateForm));
 
 		// Clear the form
 		setUpdateForm({
