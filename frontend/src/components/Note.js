@@ -7,7 +7,7 @@ const Note = ({ note }) => {
 	const dispatch = useDispatch();
 
 	const handleDeleteNote = async (id) => {
-		await axios.delete(`http://localhost:3000/api/notes/${id}`);
+		await axios.delete(`/api/notes/${id}`);
 		dispatch(deleteNote(id));
 	};
 

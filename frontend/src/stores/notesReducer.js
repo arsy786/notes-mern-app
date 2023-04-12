@@ -18,7 +18,7 @@ const initialState = {
 
 // Generates pending, fulfilled and rejected action types
 export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
-	const res = await axios.get("http://localhost:3000/api/notes");
+	const res = await axios.get("/api/notes");
 	return res.data.notes;
 });
 

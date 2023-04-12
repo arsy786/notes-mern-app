@@ -14,7 +14,7 @@ const CreateForm = () => {
 		e.preventDefault();
 
 		// Create the note
-		const res = await axios.post("http://localhost:3000/api/notes", createForm);
+		const res = await axios.post("/api/notes", createForm);
 
 		// Update the state
 		dispatch(addNote(res.data.note));

@@ -1,9 +1,12 @@
+import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import App from "./components/App";
 import "./index.css";
 import { store } from "./stores/store";
+
+axios.defaults.baseURL = "http://localhost:3000";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

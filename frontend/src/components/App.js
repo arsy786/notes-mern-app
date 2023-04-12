@@ -1,27 +1,24 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchNotes } from "../stores/notesReducer";
-import CreateForm from "./CreateForm";
-import Notes from "./Notes";
-import UpdateForm from "./UpdateForm";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import LoginPage from "../pages/LoginPage";
+import NotesPage from "../pages/NotesPage";
 
 function App() {
-	// Selector
-	const notes = useSelector((state) => state.notes.notes);
-
-	// Dispatch
-	const dispatch = useDispatch();
-
-	// Use Effect
-	useEffect(() => {
-		dispatch(fetchNotes());
-	}, [notes, dispatch]);
-
 	return (
 		<div className="App">
-			<Notes />
-			<UpdateForm />
-			<CreateForm />
+			<BrowserRouter>
+				<ul>
+					<li>
+						<Link to="/">Home</Link>
+					</li>
+					<li>
+						<Link to="/login">Login</Link>
+					</li>
+				</ul>
+				<Routes>
+					<Route index element={<NotesPage />} />
+					<Route path="/login" element={<LoginPage />} />
+				</Routes>
+			</BrowserRouter>
 		</div>
 	);
 }
