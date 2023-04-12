@@ -1,50 +1,60 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	addNote,
-	amendNote,
-	removeNote,
+	deleteNote,
+	fetchNotes,
+	setCreateForm,
 	setNotes,
-} from "../stores/noteReducer";
+	setUpdateForm,
+	updateNote,
+} from "../stores/notesReducer";
 
 function App() {
 	// Selector
-	const notes = useSelector((state) => state.notes);
+	const notes = useSelector((state) => state.notes.notes);
+	const createForm = useSelector((state) => state.notes.createForm);
+	const updateForm = useSelector((state) => state.notes.updateForm);
+
 	// Dispatch
 	const dispatch = useDispatch();
 
-	// // State
-	// const [notes, setNotes] = useState(null);
-	const [createForm, setCreateForm] = useState({
-		title: "",
-		description: "",
-	});
-	const [updateForm, setUpdateForm] = useState({
-		_id: null,
-		title: "",
-		description: "",
-	});
+	// State
+	// const [createForm, setCreateForm] = useState({
+	// 	title: "",
+	// 	description: "",
+	// });
+	// const [updateForm, setUpdateForm] = useState({
+	// 	_id: null,
+	// 	title: "",
+	// 	description: "",
+	// });
 
 	// Use Effect
 	useEffect(() => {
-		const fetchNotes = async () => {
-			// Fetch the notes
-			const res = await axios.get("http://localhost:3000/api/notes");
-
-			// Set to state
-			dispatch(setNotes(res.data.notes));
-		};
-
-		fetchNotes();
-	}, [dispatch]);
+		// fetchNotes();
+		dispatch(fetchNotes());
+	}, []);
 
 	// Functions
+	// const fetchNotes = async () => {
+	// 	// Fetch the notes
+	// 	const res = await axios.get("http://localhost:3000/api/notes");
+
+	// 	// Set to state
+	// 	dispatch(setNotes(res.data.notes));
+	// };
 
 	const updateCreateFormField = (e) => {
 		const { name, value } = e.target;
 
-		dispatch(updateNote({ ...createForm, [name]: value }));
+		dispatch(
+			setCreateForm({
+				...createForm,
+				[name]: value,
+			})
+		);
 	};
 
 	const createNote = async (e) => {
@@ -57,18 +67,20 @@ function App() {
 		dispatch(addNote(res.data.note));
 
 		// Clear the form
-		setCreateForm({
-			title: "",
-			description: "",
-		});
+		dispatch(
+			setCreateForm({
+				title: "",
+				description: "",
+			})
+		);
 	};
 
-	const deleteNote = async (id) => {
+	const handleDeleteNote = async (id) => {
 		// Delete the note
 		await axios.delete(`http://localhost:3000/api/notes/${id}`);
 
 		// Update the state
-		dispatch(removeNote(id));
+		dispatch(deleteNote(id));
 	};
 
 	const toggleUpdate = (note) => {
@@ -76,15 +88,17 @@ function App() {
 		const { title, description } = note;
 
 		// Set the state
-		setUpdateForm({
-			...updateForm,
-			_id: note._id,
-			title,
-			description,
-		});
+		dispatch(
+			setUpdateForm({
+				...updateForm,
+				id: note._id,
+				title,
+				description,
+			})
+		);
 	};
 
-	const updateNote = (e) => {
+	const handleUpdateNote = (e) => {
 		e.preventDefault();
 		const { title, description } = updateForm;
 
@@ -95,23 +109,27 @@ function App() {
 		});
 
 		// Update the state
-		dispatch(amendNote(updateForm));
+		dispatch(updateNote(updateForm));
 
 		// Clear the form
-		setUpdateForm({
-			_id: null,
-			title: "",
-			description: "",
-		});
+		dispatch(
+			setUpdateForm({
+				_id: null,
+				title: "",
+				description: "",
+			})
+		);
 	};
 
 	const handleUpdateFieldChange = (e) => {
 		const { name, value } = e.target;
 
-		setUpdateForm({
-			...updateForm,
-			[name]: value,
-		});
+		dispatch(
+			setUpdateForm({
+				...updateForm,
+				[name]: value,
+			})
+		);
 	};
 
 	return (
@@ -124,7 +142,7 @@ function App() {
 						return (
 							<div key={note._id}>
 								<h3>{note.title}</h3>
-								<button onClick={() => deleteNote(note._id)}>
+								<button onClick={() => handleDeleteNote(note._id)}>
 									Delete note
 								</button>
 								<button onClick={() => toggleUpdate(note)}>Update note</button>
@@ -136,7 +154,7 @@ function App() {
 			{updateForm._id && (
 				<div>
 					<h2>Update note</h2>
-					<form onSubmit={updateNote}>
+					<form onSubmit={handleUpdateNote}>
 						<input
 							onChange={handleUpdateFieldChange}
 							value={updateForm.title}
