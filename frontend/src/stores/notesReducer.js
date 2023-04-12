@@ -2,15 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-	loading: true,
-	notes: null,
+	loading: false,
 	error: null,
+	notes: [],
 	createForm: {
 		title: "",
 		description: "",
 	},
 	updateForm: {
-		_id: "",
+		_id: null,
 		title: "",
 		description: "",
 	},
@@ -43,7 +43,7 @@ export const notesSlice = createSlice({
 		},
 		updateNote: (state, action) => {
 			state.notes = state.notes.map((note) =>
-				note.id === action.payload.id ? action.payload : note
+				note._id === action.payload.id ? action.payload : note
 			);
 		},
 	},
@@ -51,22 +51,21 @@ export const notesSlice = createSlice({
 		builder
 			.addCase(fetchNotes.pending, (state) => {
 				state.loading = true;
+				state.error = null;
 			})
 			.addCase(fetchNotes.fulfilled, (state, action) => {
 				state.loading = false;
 				state.notes = action.payload;
-				state.error = "";
 			})
 			.addCase(fetchNotes.rejected, (state, action) => {
 				state.loading = false;
-				state.notes = [];
 				state.error = action.error.message;
 			});
 	},
 });
 
 export const {
-	setNotes,
+	// setNotes,
 	setCreateForm,
 	setUpdateForm,
 	addNote,
