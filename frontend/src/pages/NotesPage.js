@@ -7,7 +7,7 @@ import { fetchNotes } from "../stores/notesReducer";
 
 const NotesPage = () => {
 	// Selector
-	const notes = useSelector((state) => state.notes.notes);
+	// const notes = useSelector((state) => state.notes.notes);
 
 	// Dispatch
 	const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const NotesPage = () => {
 	// Use Effect
 	useEffect(() => {
 		dispatch(fetchNotes());
-	}, [notes, dispatch]);
+	}, []);
 
 	return (
 		<div>

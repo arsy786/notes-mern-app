@@ -39,7 +39,7 @@ export const notesSlice = createSlice({
 			state.notes.push(action.payload);
 		},
 		deleteNote: (state, action) => {
-			state.notes = state.notes.filter((note) => note.id !== action.payload);
+			state.notes = state.notes.filter((note) => note._id !== action.payload);
 		},
 		updateNote: (state, action) => {
 			state.notes = state.notes.map((note) =>
