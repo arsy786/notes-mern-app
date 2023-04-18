@@ -1,6 +1,6 @@
 # Notes MERN App (TBC\*)
 
-\*Auth frontend to be complete
+\*Auth frontend to be complete [Create a MERN CRUD App (5/6) - Adding authentication to our React app (YouTube/CodingWithRobby)](https://www.youtube.com/watch?v=jcckC--ibmM&list=PL-LRDpVN2fZA-1igOQ6PDcqfBjS-vaC7w&index=5)
 
 This is a web application built with the MERN stack (MongoDB, Express.js, React, and Node.js) that allows users to create, read, update, and delete notes. This project was built following the [Create a MERN CRUD App (YouTube/CodingWithRobby)](https://www.youtube.com/playlist?list=PL-LRDpVN2fZA-1igOQ6PDcqfBjS-vaC7w) playlist on YouTube.
 
