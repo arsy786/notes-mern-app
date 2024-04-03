@@ -6,7 +6,7 @@ import App from "./components/App";
 import "./index.css";
 import { store } from "./stores/store";
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "http://localhost:3001";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

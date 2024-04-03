@@ -2,6 +2,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 
+/* [POST] Signup Credentials */
+// Get the email and password off req body, Hash password, Create a user with the data, Respond
 const signup = async (req, res) => {
 	try {
 		const { email, password } = req.body;
@@ -15,6 +17,8 @@ const signup = async (req, res) => {
 	}
 };
 
+/* [POST] Login Credentials */
+// Get the email and password off req body, Find the user with requested email, Compare sent in password with found user password hash, Create a jwt token, Set the cookie, Send it
 const login = async (req, res) => {
 	try {
 		const { email, password } = req.body;
@@ -42,6 +46,8 @@ const login = async (req, res) => {
 	}
 };
 
+/* [GET] Logout */
+// Clear Authorization Cookie
 const logout = (req, res) => {
 	try {
 		res.cookie("Authorization", "", { expires: new Date() });
@@ -52,6 +58,8 @@ const logout = (req, res) => {
 	}
 };
 
+/* [GET] Check is User is Authorized */
+// Send 200 if Authorized, 400 otherwise
 const checkAuth = (req, res) => {
 	try {
 		res.sendStatus(200);
@@ -60,6 +68,11 @@ const checkAuth = (req, res) => {
 	}
 };
 
-const userController = { signup, login, logout, checkAuth };
+const userController = {
+	signup,
+	login,
+	logout,
+	checkAuth,
+};
 
 module.exports = userController;

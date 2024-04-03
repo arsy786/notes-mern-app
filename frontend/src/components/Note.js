@@ -13,6 +13,7 @@ const Note = ({ note }) => {
 
 	const toggleUpdate = (note) => {
 		const { _id, title, description } = note;
+
 		dispatch(
 			setUpdateForm({
 				_id,

@@ -6,16 +6,11 @@ import UpdateForm from "../components/UpdateForm";
 import { fetchNotes } from "../stores/notesReducer";
 
 const NotesPage = () => {
-	// Selector
-	// const notes = useSelector((state) => state.notes.notes);
-
-	// Dispatch
 	const dispatch = useDispatch();
 
-	// Use Effect
 	useEffect(() => {
 		dispatch(fetchNotes());
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<div>

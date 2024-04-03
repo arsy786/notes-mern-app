@@ -6,8 +6,6 @@ import { addNote, setCreateForm } from "../stores/notesReducer";
 const CreateForm = () => {
 	const createForm = useSelector((state) => state.notes.createForm);
 	const updateForm = useSelector((state) => state.notes.updateForm);
-
-	// Dispatch
 	const dispatch = useDispatch();
 
 	const createNote = async (e) => {
@@ -54,7 +52,7 @@ const CreateForm = () => {
 							onChange={updateCreateFormField}
 							value={createForm.description}
 							name="description"
-						></textarea>
+						/>
 						<button type="submit">Create note</button>
 					</form>
 				</div>

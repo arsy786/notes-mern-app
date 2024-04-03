@@ -70,7 +70,7 @@ const deleteNoteById = async (req, res) => {
 			res.json({ success: "Record deleted" });
 		}
 	} catch (error) {
-		res.status(500).json({ message: "Could not delete note!" });
+		res.status(400).json({ message: "Could not delete note!" });
 	}
 };
 
