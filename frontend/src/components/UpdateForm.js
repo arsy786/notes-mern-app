@@ -23,7 +23,7 @@ const UpdateForm = () => {
 		const { title, description } = updateForm;
 
 		// Update the note
-		axios.put(`http://localhost:3000/api/notes/${updateForm._id}`, {
+		axios.put(`http://localhost:3001/api/notes/${updateForm._id}`, {
 			title,
 			description,
 		});

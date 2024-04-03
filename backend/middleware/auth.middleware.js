@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 
+// Read token off cookies, Decode the token, Check expiration, Find user using decoded sub, Attach user to req, Continue on
 const requireAuth = async (req, res, next) => {
 	try {
 		const token = req.cookies.Authorization;

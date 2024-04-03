@@ -7,12 +7,13 @@ const Note = ({ note }) => {
 	const dispatch = useDispatch();
 
 	const handleDeleteNote = async (id) => {
-		await axios.delete(`http://localhost:3000/api/notes/${id}`);
+		await axios.delete(`http://localhost:3001/api/notes/${id}`);
 		dispatch(deleteNote(id));
 	};
 
 	const toggleUpdate = (note) => {
 		const { _id, title, description } = note;
+
 		dispatch(
 			setUpdateForm({
 				_id,

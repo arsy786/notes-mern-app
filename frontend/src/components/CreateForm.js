@@ -6,15 +6,13 @@ import { addNote, setCreateForm } from "../stores/notesReducer";
 const CreateForm = () => {
 	const createForm = useSelector((state) => state.notes.createForm);
 	const updateForm = useSelector((state) => state.notes.updateForm);
-
-	// Dispatch
 	const dispatch = useDispatch();
 
 	const createNote = async (e) => {
 		e.preventDefault();
 
 		// Create the note
-		const res = await axios.post("http://localhost:3000/api/notes", createForm);
+		const res = await axios.post("http://localhost:3001/api/notes", createForm);
 
 		// Update the state
 		dispatch(addNote(res.data.note));
@@ -54,7 +52,7 @@ const CreateForm = () => {
 							onChange={updateCreateFormField}
 							value={createForm.description}
 							name="description"
-						></textarea>
+						/>
 						<button type="submit">Create note</button>
 					</form>
 				</div>
