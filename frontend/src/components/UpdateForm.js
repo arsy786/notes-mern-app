@@ -56,7 +56,7 @@ const UpdateForm = () => {
 							onChange={handleUpdateFieldChange}
 							value={updateForm.description}
 							name="description"
-						></textarea>
+						/>
 						<button type="submit">Update note</button>
 					</form>
 				</div>
