@@ -22,7 +22,7 @@ function App() {
 	// Functions
 	const fetchNotes = async () => {
 		// Fetch the notes
-		const res = await axios.get("http://localhost:3000/api/notes");
+		const res = await axios.get("http://localhost:3001/api/notes");
 
 		// Set to state
 		setNotes(res.data.notes);
@@ -41,7 +41,7 @@ function App() {
 		e.preventDefault();
 
 		// Create the note
-		const res = await axios.post("http://localhost:3000/api/notes", createForm);
+		const res = await axios.post("http://localhost:3001/api/notes", createForm);
 
 		// Update the state
 		setNotes([...notes, res.data.note]);
@@ -55,7 +55,7 @@ function App() {
 
 	const deleteNote = async (id) => {
 		// Delete the note
-		await axios.delete(`http://localhost:3000/api/notes/${id}`);
+		await axios.delete(`http://localhost:3001/api/notes/${id}`);
 
 		// Update the state
 		setNotes(notes.filter((note) => note._id !== id));
@@ -79,7 +79,7 @@ function App() {
 		const { title, description } = updateForm;
 
 		// Update the note
-		axios.put(`http://localhost:3000/api/notes/${updateForm._id}`, {
+		axios.put(`http://localhost:3001/api/notes/${updateForm._id}`, {
 			title,
 			description,
 		});
