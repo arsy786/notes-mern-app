@@ -20,6 +20,6 @@ app.get("/", (req, res) => {
 
 // Routing
 app.use("/api/notes", noteRoutes);
-app.use("/api", userRoutes);
+app.use("/api/auth", userRoutes);
 
 module.exports = app;
