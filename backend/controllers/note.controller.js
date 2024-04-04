@@ -7,8 +7,9 @@ const getAllNotes = async (req, res) => {
 		const notes = await Note.find();
 		res.json({ notes });
 	} catch (error) {
-		res.status(400);
-		console.error("Could not get notes");
+		res
+			.status(500)
+			.json({ message: "Internal server error, Could not get notes" });
 	}
 };
 
@@ -17,13 +18,15 @@ const getAllNotes = async (req, res) => {
 const getNoteById = async (req, res) => {
 	const noteId = req.params.id;
 	try {
-		const doesNoteExist = await Note.exists({ _id: noteId });
-		if (doesNoteExist) {
-			const note = await Note.findById(noteId);
-			res.json({ note });
+		const note = await Note.findById(noteId);
+		if (!note) {
+			return res.status(404).json({ message: "Note not found" });
 		}
+		res.json({ note });
 	} catch (error) {
-		res.status(400).json({ message: "Could not get note by ID" });
+		res
+			.status(500)
+			.json({ message: "Internal server error, Could not get note by ID" });
 	}
 };
 
@@ -35,7 +38,9 @@ const createNote = async (req, res) => {
 		const note = await Note.create({ title, description });
 		res.status(201).send({ note });
 	} catch (error) {
-		res.status(400).json({ message: "Could not add note" });
+		res
+			.status(500)
+			.json({ message: "Internal server error, Could not add note" });
 	}
 };
 
@@ -44,18 +49,19 @@ const createNote = async (req, res) => {
 const updateNoteById = async (req, res) => {
 	const noteId = req.params.id;
 	const { title, description } = req.body;
+
 	try {
-		const doesNoteExist = await Note.exists({ _id: noteId });
-		if (doesNoteExist) {
-			await Note.findByIdAndUpdate(noteId, {
-				title,
-				description,
-			});
-			const note = await Note.findById(noteId);
-			res.json({ note });
+		const note = await Note.findByIdAndUpdate(
+			noteId,
+			{ title, description },
+			{ new: true }
+		);
+		if (!note) {
+			return res.status(404).json({ message: "Note not found" });
 		}
+		res.json({ note });
 	} catch (error) {
-		res.status(400).json({ message: "Could not update note" });
+		res.status(500).json({ message: "Internal server error" });
 	}
 };
 
@@ -68,9 +74,13 @@ const deleteNoteById = async (req, res) => {
 		if (doesNoteExist) {
 			await Note.findByIdAndDelete({ _id: noteId });
 			res.json({ success: "Record deleted" });
+		} else {
+			res.status(404).json({ message: "Note not found!" });
 		}
 	} catch (error) {
-		res.status(400).json({ message: "Could not delete note!" });
+		res
+			.status(500)
+			.json({ message: "Internal server error, Could not delete note!" });
 	}
 };
 
