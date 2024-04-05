@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import LoginPage from "../pages/LoginPage";
 import { LogoutPage } from "../pages/LogoutPage";
@@ -6,23 +7,34 @@ import { SignupPage } from "../pages/SignupPage";
 import RequireAuth from "./RequireAuth";
 
 function App() {
+	const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+
+	const renderNavLinks = () => {
+		return isLoggedIn ? (
+			<>
+				<li>
+					<Link to="/">Home</Link>
+				</li>
+				<li>
+					<Link to="/logout">Logout</Link>
+				</li>
+			</>
+		) : (
+			<>
+				<li>
+					<Link to="/login">Login</Link>
+				</li>
+				<li>
+					<Link to="/signup">Signup</Link>
+				</li>
+			</>
+		);
+	};
+
 	return (
 		<div className="App">
 			<BrowserRouter>
-				<ul>
-					<li>
-						<Link to="/">Home</Link>
-					</li>
-					<li>
-						<Link to="/login">Login</Link>
-					</li>
-					<li>
-						<Link to="/signup">Signup</Link>
-					</li>
-					<li>
-						<Link to="/logout">Logout</Link>
-					</li>
-				</ul>
+				<ul>{renderNavLinks()}</ul>
 				<Routes>
 					<Route
 						index

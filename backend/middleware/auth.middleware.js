@@ -5,17 +5,18 @@ const User = require("../models/user.model");
 const requireAuth = async (req, res, next) => {
 	try {
 		const token = req.cookies.Authorization;
+		if (!token) throw new Error("No token provided.");
+
 		const decoded = jwt.verify(token, process.env.SECRET);
-		if (Date.now() > decoded.exp) return res.sendStatus(401);
+		if (Date.now() > decoded.exp) throw new Error("Token has expired.");
 
 		const user = await User.findById(decoded.sub);
-		if (!user) return res.sendStatus(401);
+		if (!user) throw new Error("User not found.");
 
 		req.user = user;
 		next();
 	} catch (err) {
-		console.log(err);
-		return res.sendStatus(401);
+		next(Object.assign(err, { statusCode: 401 }));
 	}
 };
 

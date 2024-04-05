@@ -11,10 +11,10 @@ const noteSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+		user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // many-to-one
 	},
 	{
-		versionKey: false,
+		versionKey: false, // Disable the __v field that Mongoose adds to schemas to manage internal versioning
 	}
 );
 

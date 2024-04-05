@@ -1,52 +1,47 @@
 const Note = require("../models/note.model.js");
+const { errorHandler } = require("../middleware/error.middleware");
 
 /* [GET] View All Notes */
 // Find the notes, Respond with them
-const getAllNotes = async (req, res) => {
+const getAllNotes = async (req, res, next) => {
 	try {
 		const notes = await Note.find({ user: req.user._id });
 		res.json({ notes });
 	} catch (error) {
-		res
-			.status(500)
-			.json({ message: "Internal server error, Could not get notes" });
+		next(error);
 	}
 };
 
 /* [GET] View a specific Note by its ID */
 // Get id from the url, Find the note using that id, Respond with the note
-const getNoteById = async (req, res) => {
+const getNoteById = async (req, res, next) => {
 	const noteId = req.params.id;
 	try {
 		const note = await Note.findOne({ _id: noteId, user: req.user._id });
 		if (!note) {
-			return res.status(404).json({ message: "Note not found" });
+			next(Object.assign(new Error("Note not found"), { statusCode: 404 }));
 		}
 		res.json({ note });
 	} catch (error) {
-		res
-			.status(500)
-			.json({ message: "Internal server error, Could not get note by ID" });
+		next(error);
 	}
 };
 
 /* [POST] Create a Note */
 // Get the sent in data from the request body, Create a note with it, Respond with the new note
-const createNote = async (req, res) => {
+const createNote = async (req, res, next) => {
 	const { title, description } = req.body;
 	try {
 		const note = await Note.create({ title, description, user: req.user._id });
 		res.status(201).send({ note });
 	} catch (error) {
-		res
-			.status(500)
-			.json({ message: "Internal server error, Could not add note" });
+		next(error);
 	}
 };
 
 /* [PUT] Update a specific Note by its ID */
 // Get the id from the url, Get the data from the request body, Find and update the record, Respond with updated record
-const updateNoteById = async (req, res) => {
+const updateNoteById = async (req, res, next) => {
 	const noteId = req.params.id;
 	const { title, description } = req.body;
 
@@ -57,17 +52,17 @@ const updateNoteById = async (req, res) => {
 			{ new: true }
 		);
 		if (!note) {
-			return res.status(404).json({ message: "Note not found" });
+			next(Object.assign(new Error("Note not found"), { statusCode: 404 }));
 		}
 		res.json({ note });
 	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
+		next(error);
 	}
 };
 
 /* [DELETE] Remove a specific Note by its ID */
 // Get id from url, Delete the record, Respond
-const deleteNoteById = async (req, res) => {
+const deleteNoteById = async (req, res, next) => {
 	const noteId = req.params.id;
 	try {
 		const doesNoteExist = await Note.exists({
@@ -78,12 +73,10 @@ const deleteNoteById = async (req, res) => {
 			await Note.findByIdAndDelete({ _id: noteId, user: req.user._id });
 			res.json({ success: "Record deleted" });
 		} else {
-			res.status(404).json({ message: "Note not found!" });
+			next(Object.assign(new Error("Note not found"), { statusCode: 404 }));
 		}
 	} catch (error) {
-		res
-			.status(500)
-			.json({ message: "Internal server error, Could not delete note!" });
+		next(error);
 	}
 };
 
