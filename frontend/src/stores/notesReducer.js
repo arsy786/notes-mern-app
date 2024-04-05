@@ -26,9 +26,9 @@ export const notesSlice = createSlice({
 	name: "notes",
 	initialState,
 	reducers: {
-		// setNotes: (state, action) => {
-		// 	state.notes = action.payload;
-		// },
+		clearNotes: (state) => {
+			state.notes = [];
+		},
 		setCreateForm: (state, action) => {
 			state.createForm = action.payload;
 		},
@@ -43,7 +43,7 @@ export const notesSlice = createSlice({
 		},
 		updateNote: (state, action) => {
 			state.notes = state.notes.map((note) =>
-				note._id === action.payload.id ? action.payload : note
+				note._id === action.payload._id ? action.payload : note
 			);
 		},
 	},
@@ -65,7 +65,7 @@ export const notesSlice = createSlice({
 });
 
 export const {
-	// setNotes,
+	clearNotes,
 	setCreateForm,
 	setUpdateForm,
 	addNote,

@@ -6,11 +6,17 @@ import UpdateForm from "../components/UpdateForm";
 import { fetchNotes } from "../stores/notesReducer";
 
 const NotesPage = () => {
+	const isLoading = useSelector((state) => state.notes.loading);
 	const dispatch = useDispatch();
+	console.log(isLoading);
 
 	useEffect(() => {
 		dispatch(fetchNotes());
 	}, [dispatch]);
+
+	if (isLoading) {
+		return <div>Loading Notes...</div>;
+	}
 
 	return (
 		<div>

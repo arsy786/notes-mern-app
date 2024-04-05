@@ -18,15 +18,16 @@ const UpdateForm = () => {
 		);
 	};
 
-	const handleUpdateNote = (e) => {
+	const handleUpdateNote = async (e) => {
 		e.preventDefault();
 		const { title, description } = updateForm;
 
 		// Update the note
-		axios.put(`/api/notes/${updateForm._id}`, {
+		const res = await axios.put(`/api/notes/${updateForm._id}`, {
 			title,
 			description,
 		});
+		console.log(res);
 
 		// Update the state
 		dispatch(updateNote(updateForm));

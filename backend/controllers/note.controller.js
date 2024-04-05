@@ -4,7 +4,7 @@ const Note = require("../models/note.model.js");
 // Find the notes, Respond with them
 const getAllNotes = async (req, res) => {
 	try {
-		const notes = await Note.find();
+		const notes = await Note.find({ user: req.user._id });
 		res.json({ notes });
 	} catch (error) {
 		res
@@ -18,7 +18,7 @@ const getAllNotes = async (req, res) => {
 const getNoteById = async (req, res) => {
 	const noteId = req.params.id;
 	try {
-		const note = await Note.findById(noteId);
+		const note = await Note.findOne({ _id: noteId, user: req.user._id });
 		if (!note) {
 			return res.status(404).json({ message: "Note not found" });
 		}
@@ -35,7 +35,7 @@ const getNoteById = async (req, res) => {
 const createNote = async (req, res) => {
 	const { title, description } = req.body;
 	try {
-		const note = await Note.create({ title, description });
+		const note = await Note.create({ title, description, user: req.user._id });
 		res.status(201).send({ note });
 	} catch (error) {
 		res
@@ -51,8 +51,8 @@ const updateNoteById = async (req, res) => {
 	const { title, description } = req.body;
 
 	try {
-		const note = await Note.findByIdAndUpdate(
-			noteId,
+		const note = await Note.findOneAndUpdate(
+			{ _id: noteId, user: req.user._id },
 			{ title, description },
 			{ new: true }
 		);
@@ -70,9 +70,12 @@ const updateNoteById = async (req, res) => {
 const deleteNoteById = async (req, res) => {
 	const noteId = req.params.id;
 	try {
-		const doesNoteExist = await Note.exists({ _id: noteId });
+		const doesNoteExist = await Note.exists({
+			_id: noteId,
+			user: req.user._id,
+		});
 		if (doesNoteExist) {
-			await Note.findByIdAndDelete({ _id: noteId });
+			await Note.findByIdAndDelete({ _id: noteId, user: req.user._id });
 			res.json({ success: "Record deleted" });
 		} else {
 			res.status(404).json({ message: "Note not found!" });
