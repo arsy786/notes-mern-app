@@ -36,20 +36,27 @@ const UpdateForm = () => {
 	return (
 		<div>
 			{updateForm._id && (
-				<div>
-					<h2>Update note</h2>
+				<div className="p-4 bg-white rounded shadow-md">
+					<h2 className="mb-4 text-lg font-bold">Update note</h2>
 					<form onSubmit={handleUpdateNote}>
 						<input
+							className="w-full px-3 py-2 mb-4 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
 							onChange={handleUpdateFieldChange}
 							value={updateForm.title}
 							name="title"
 						/>
 						<textarea
+							className="w-full px-3 py-2 mb-4 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
 							onChange={handleUpdateFieldChange}
 							value={updateForm.description}
 							name="description"
 						/>
-						<button type="submit">Update note</button>
+						<button
+							type="submit"
+							className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
+						>
+							Update note
+						</button>
 					</form>
 				</div>
 			)}

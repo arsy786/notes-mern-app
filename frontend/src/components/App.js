@@ -3,18 +3,48 @@ import LoginPage from "../pages/LoginPage";
 import { LogoutPage } from "../pages/LogoutPage";
 import NotesPage from "../pages/NotesPage";
 import { SignupPage } from "../pages/SignupPage";
+import AuthRoute from "./AuthRoute";
 import { NavBar } from "./NavBar";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
 	return (
-		<div className="App">
+		<div>
 			<BrowserRouter>
 				<NavBar />
 				<Routes>
-					<Route path="/" element={<NotesPage />} />
-					<Route path="/login" element={<LoginPage />} />
-					<Route path="/signup" element={<SignupPage />} />
-					<Route path="/logout" element={<LogoutPage />} />
+					<Route
+						path="/"
+						element={
+							<ProtectedRoute>
+								<NotesPage />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/login"
+						element={
+							<AuthRoute>
+								<LoginPage />
+							</AuthRoute>
+						}
+					/>
+					<Route
+						path="/signup"
+						element={
+							<AuthRoute>
+								<SignupPage />
+							</AuthRoute>
+						}
+					/>
+					<Route
+						path="/logout"
+						element={
+							<ProtectedRoute>
+								<LogoutPage />
+							</ProtectedRoute>
+						}
+					/>
 				</Routes>
 			</BrowserRouter>
 		</div>

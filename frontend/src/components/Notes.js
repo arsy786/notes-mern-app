@@ -8,11 +8,13 @@ const Notes = () => {
 
 	return (
 		<div>
-			<h2>Notes:</h2>
-			{notes &&
-				notes.map((note, index) => {
-					return <Note note={note} key={index} />;
-				})}
+			<h2 className="mb-4 text-2xl font-bold">Notes:</h2>
+			<div className="grid grid-cols-1 gap-4">
+				{notes &&
+					notes.map((note, index) => {
+						return <Note note={note} key={index} />;
+					})}
+			</div>
 		</div>
 	);
 };

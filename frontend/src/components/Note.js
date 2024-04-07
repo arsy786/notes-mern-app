@@ -23,11 +23,23 @@ const Note = ({ note }) => {
 	};
 
 	return (
-		<div key={note._id}>
-			<h3>{note.title}</h3>
-			<p>{note.description}</p>
-			<button onClick={() => handleDeleteNote(note._id)}>Delete note</button>
-			<button onClick={() => toggleUpdate(note)}>Update note</button>
+		<div key={note._id} className="p-4 bg-white rounded shadow-md">
+			<h3 className="mb-2 text-lg font-bold">{note.title}</h3>
+			<p className="text-gray-700">{note.description}</p>
+			<div className="flex mt-4 space-x-2">
+				<button
+					className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700"
+					onClick={() => handleDeleteNote(note._id)}
+				>
+					Delete note
+				</button>
+				<button
+					className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+					onClick={() => toggleUpdate(note)}
+				>
+					Update note
+				</button>
+			</div>
 		</div>
 	);
 };

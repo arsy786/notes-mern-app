@@ -27,11 +27,15 @@ export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
 
 export const login = createAsyncThunk("auth/login", async (loginForm) => {
 	const res = await axios.post("/api/auth/login", loginForm);
+	// Logic for storing user email after successful login
+	localStorage.setItem("user", res.data.email);
+
 	return res.data.email;
 });
 
 export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
 	await axios.get("/api/auth/logout");
+	localStorage.removeItem("user");
 });
 
 export const authSlice = createSlice({

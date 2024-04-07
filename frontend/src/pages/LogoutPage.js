@@ -13,8 +13,13 @@ export const LogoutPage = () => {
 	}, [dispatch]);
 
 	if (loadingLogout) {
-		return null;
+		return <div className="mt-8 text-center">Logging out...</div>;
 	}
 
-	return <h1>You are now logged out</h1>;
+	return (
+		<div className="flex flex-col items-center justify-center h-screen-minus-navbar">
+			<h1 className="mb-4 text-3xl font-bold">You are now logged out</h1>
+			<p className="text-lg">Thank you for using Notes App!</p>
+		</div>
+	);
 };
