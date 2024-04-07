@@ -3,18 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import CreateForm from "../components/CreateForm";
 import Notes from "../components/Notes";
 import UpdateForm from "../components/UpdateForm";
+import { checkAuth } from "../stores/authReducer";
 import { fetchNotes } from "../stores/notesReducer";
 
 const NotesPage = () => {
-	const isLoading = useSelector((state) => state.notes.loading);
+	const isLoadingNotes = useSelector((state) => state.notes.loading);
 	const dispatch = useDispatch();
-	console.log(isLoading);
 
 	useEffect(() => {
+		dispatch(checkAuth());
 		dispatch(fetchNotes());
 	}, [dispatch]);
 
-	if (isLoading) {
+	if (isLoadingNotes) {
 		return <div>Loading Notes...</div>;
 	}
 

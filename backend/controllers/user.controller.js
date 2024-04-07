@@ -3,14 +3,18 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 
 /* [POST] Signup Credentials */
-// Get the email and password off req body, Hash password, Create a user with the data, Respond
+// Get the email and password off req body, Hash password, Create a user with the data, Respond (by automatically logging user in)
 const signup = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
 		const hashedPassword = bcrypt.hashSync(password, 8);
 
 		await User.create({ email, password: hashedPassword });
-		res.sendStatus(200);
+
+		// if user must verify e-mail first, then remove the below code
+		req.body = { email, password };
+		await login(req, res, next);
+		// res.sendStatus(200);
 	} catch (err) {
 		next(err);
 	}
@@ -22,11 +26,17 @@ const login = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
 
+		// Check if user exists before comparing the password
 		const user = await User.findOne({ email });
-		const passwordMatch = bcrypt.compareSync(password, user.password);
+		if (!user) {
+			return next(
+				Object.assign(new Error("Authentication failed"), { statusCode: 401 })
+			);
+		}
 
-		if (!user || !passwordMatch) {
-			next(
+		const passwordMatch = bcrypt.compareSync(password, user.password);
+		if (!passwordMatch) {
+			return next(
 				Object.assign(new Error("Authentication failed"), { statusCode: 401 })
 			);
 		}
@@ -41,7 +51,8 @@ const login = async (req, res, next) => {
 			secure: process.env.NODE_ENV === "production",
 		});
 
-		res.sendStatus(200);
+		// res.sendStatus(200);
+		res.status(200).json({ email: user.email });
 	} catch (err) {
 		next(err);
 	}
@@ -62,7 +73,8 @@ const logout = (req, res, next) => {
 // Send 200 if Authorized, 400 otherwise
 const checkAuth = (req, res, next) => {
 	try {
-		res.sendStatus(200);
+		// res.sendStatus(200);
+		res.status(200).json({ email: req.user.email });
 	} catch (err) {
 		next(err);
 	}

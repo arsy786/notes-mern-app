@@ -1,7 +1,11 @@
 import axios from "axios";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUpdateForm, updateNote } from "../stores/notesReducer";
+import {
+	resetUpdateForm,
+	setUpdateForm,
+	updateNote,
+} from "../stores/notesReducer";
 
 const UpdateForm = () => {
 	const updateForm = useSelector((state) => state.notes.updateForm);
@@ -9,7 +13,6 @@ const UpdateForm = () => {
 
 	const handleUpdateFieldChange = (e) => {
 		const { name, value } = e.target;
-
 		dispatch(
 			setUpdateForm({
 				...updateForm,
@@ -21,25 +24,13 @@ const UpdateForm = () => {
 	const handleUpdateNote = async (e) => {
 		e.preventDefault();
 		const { title, description } = updateForm;
-
-		// Update the note
 		const res = await axios.put(`/api/notes/${updateForm._id}`, {
 			title,
 			description,
 		});
 		console.log(res);
-
-		// Update the state
 		dispatch(updateNote(updateForm));
-
-		// Clear the form
-		dispatch(
-			setUpdateForm({
-				_id: null,
-				title: "",
-				description: "",
-			})
-		);
+		dispatch(resetUpdateForm());
 	};
 
 	return (

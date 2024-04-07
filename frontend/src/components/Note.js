@@ -13,7 +13,6 @@ const Note = ({ note }) => {
 
 	const toggleUpdate = (note) => {
 		const { _id, title, description } = note;
-
 		dispatch(
 			setUpdateForm({
 				_id,
@@ -26,6 +25,7 @@ const Note = ({ note }) => {
 	return (
 		<div key={note._id}>
 			<h3>{note.title}</h3>
+			<p>{note.description}</p>
 			<button onClick={() => handleDeleteNote(note._id)}>Delete note</button>
 			<button onClick={() => toggleUpdate(note)}>Update note</button>
 		</div>

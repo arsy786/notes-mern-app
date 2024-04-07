@@ -1,11 +1,16 @@
-import axios from "axios";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLoggedIn, setLoginForm } from "../stores/authReducer";
+import {
+	checkAuth,
+	login,
+	resetLoginForm,
+	setLoginForm,
+} from "../stores/authReducer";
 
 const LoginForm = () => {
 	const loginForm = useSelector((state) => state.auth.loginForm);
+	const loadingLogin = useSelector((state) => state.auth.loadingLogin);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -21,16 +26,17 @@ const LoginForm = () => {
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
-		const res = await axios.post("/api/auth/login", loginForm);
-		console.log(res);
-		dispatch(setLoggedIn(true));
-		dispatch(
-			setLoginForm({
-				email: "",
-				password: "",
-			})
-		);
-		navigate("/");
+		dispatch(login(loginForm)).then(() => {
+			// dispatch(checkAuth());
+			dispatch(resetLoginForm());
+			navigate("/");
+		});
+
+		// instead of manually setting loggedIn state, can run checkAuth
+		// dispatch(checkAuth()).then(() => {
+		// 	dispatch(resetLoginForm());
+		// 	navigate("/");
+		// });
 	};
 
 	return (
@@ -40,14 +46,18 @@ const LoginForm = () => {
 				value={loginForm.email}
 				type="email"
 				name="email"
+				disabled={loadingLogin}
 			/>
 			<input
 				onChange={updateLoginForm}
 				value={loginForm.password}
 				type="password"
 				name="password"
+				disabled={loadingLogin}
 			/>
-			<button type="submit">Login</button>
+			<button type="submit" disabled={loadingLogin}>
+				Login
+			</button>
 		</form>
 	);
 };

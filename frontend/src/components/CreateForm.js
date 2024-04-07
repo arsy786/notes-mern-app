@@ -1,7 +1,11 @@
 import axios from "axios";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addNote, setCreateForm } from "../stores/notesReducer";
+import {
+	addNote,
+	resetCreateForm,
+	setCreateForm,
+} from "../stores/notesReducer";
 
 const CreateForm = () => {
 	const createForm = useSelector((state) => state.notes.createForm);
@@ -10,25 +14,13 @@ const CreateForm = () => {
 
 	const createNote = async (e) => {
 		e.preventDefault();
-
-		// Create the note
 		const res = await axios.post("/api/notes", createForm);
-
-		// Update the state
 		dispatch(addNote(res.data.note));
-
-		// Clear the form
-		dispatch(
-			setCreateForm({
-				title: "",
-				description: "",
-			})
-		);
+		dispatch(resetCreateForm());
 	};
 
 	const updateCreateFormField = (e) => {
 		const { name, value } = e.target;
-
 		dispatch(
 			setCreateForm({
 				...createForm,

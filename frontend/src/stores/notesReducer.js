@@ -32,8 +32,14 @@ export const notesSlice = createSlice({
 		setCreateForm: (state, action) => {
 			state.createForm = action.payload;
 		},
+		resetCreateForm: (state) => {
+			state.createForm = initialState.createForm;
+		},
 		setUpdateForm: (state, action) => {
 			state.updateForm = action.payload;
+		},
+		resetUpdateForm: (state, action) => {
+			state.updateForm = initialState.updateForm;
 		},
 		addNote: (state, action) => {
 			state.notes.push(action.payload);
@@ -67,7 +73,9 @@ export const notesSlice = createSlice({
 export const {
 	clearNotes,
 	setCreateForm,
+	resetCreateForm,
 	setUpdateForm,
+	resetUpdateForm,
 	addNote,
 	deleteNote,
 	updateNote,

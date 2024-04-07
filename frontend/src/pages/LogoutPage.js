@@ -1,21 +1,20 @@
-import axios from "axios";
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setLoggedIn } from "../stores/authReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../stores/authReducer";
 import { clearNotes } from "../stores/notesReducer";
 
 export const LogoutPage = () => {
 	const dispatch = useDispatch();
-
-	const logout = async () => {
-		await axios.get("/api/auth/logout");
-		dispatch(clearNotes());
-	};
+	const loadingLogout = useSelector((state) => state.auth.loadingLogout);
 
 	useEffect(() => {
-		logout();
-		dispatch(setLoggedIn(false));
+		dispatch(logoutUser());
+		dispatch(clearNotes());
 	}, [dispatch]);
+
+	if (loadingLogout) {
+		return null;
+	}
 
 	return <h1>You are now logged out</h1>;
 };
